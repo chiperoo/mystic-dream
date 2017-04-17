@@ -10,9 +10,9 @@ import dream.mystic.domain.Trip;
 import io.katharsis.repository.RelationshipRepositoryBase;
 
 @Component
-public class CustomerToTripRelationshipRepository extends RelationshipRepositoryBase<Customer, Long, Trip, Long> {
+public class TripToCustomerRelationshipRepository extends RelationshipRepositoryBase<Trip, Long, Customer, Long> {
 
-	public CustomerToTripRelationshipRepository() {
-		super(Customer.class, Trip.class);
+	public TripToCustomerRelationshipRepository() {
+		super(Trip.class, Customer.class);
 	}
 }

@@ -39,12 +39,6 @@
 			<artifactId>h2</artifactId>
 			<scope>runtime</scope>
 		</dependency>
-		
-        <dependency>
-			<groupId>io.katharsis</groupId>
-			<artifactId>katharsis-core</artifactId>
-			<version>3.0.1</version>
-		</dependency>
 
 		<dependency>
 			<groupId>io.katharsis</groupId>
@@ -57,11 +51,7 @@
 			<artifactId>katharsis-validation</artifactId>
 			<version>3.0.1</version>
 		</dependency>
-		<dependency>
-			<groupId>io.katharsis</groupId>
-			<artifactId>katharsis-brave</artifactId>
-			<version>3.0.1</version>
-		</dependency>
+		
 		<dependency>
 			<groupId>io.katharsis</groupId>
 			<artifactId>katharsis-jpa</artifactId>

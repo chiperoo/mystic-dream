@@ -24,3 +24,79 @@ The code uses:
 ```
 $ mvn clean spring-boot:run
 ```
+
+## Calls
+I found [Postman](https://www.getpostman.com/) invaluable for testing the calls. It is available as a Chrome extension or Mac/Windows/Linux application.
+
+```
+# Get all customers
+GET http://localhost:8080/api/customer/
+```
+
+```
+# Get customer id 1
+GET http://localhost:8080/api/customer/1
+```
+
+```
+# Create new customer
+POST http://localhost:8080/api/customer/
+
+# body; type: json
+	{
+		"data": {
+			"type": "customer",
+			"attributes": {
+				"emailAddress": "diana@fake.email",
+				"name": "diana"
+			}
+		}
+	}
+```
+
+```
+# Update customer id 5	
+PATCH http://localhost:8080/api/customer/5
+
+# body; type: json
+	{
+	  "data": {
+	    "type": "customer",
+	    "attributes": {
+	      "name": "wonder woman"
+	    }
+	  }
+	}
+```
+
+```
+# Create new trip
+POST http://localhost:8080/api/trip
+
+# body; type: json
+{
+  "data": {
+    "type": "trip",
+    "attributes": {
+      "description": "Mars adventure",
+      "createdById": 1
+    }
+  }
+}
+```
+
+```
+#  Update relationship between trip and customer
+PATCH http://localhost:8080/api/trip/5/relationships/customer
+
+# body; type: json
+{
+  "data": {
+    "type": "customer",
+    "id": 1
+  }
+}
+```
+
+
+## Implementation

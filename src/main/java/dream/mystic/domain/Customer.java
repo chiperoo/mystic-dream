@@ -11,12 +11,12 @@ import javax.persistence.OneToMany;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import io.katharsis.resource.annotations.JsonApiId;
-import io.katharsis.resource.annotations.JsonApiIncludeByDefault;
-import io.katharsis.resource.annotations.JsonApiRelation;
+//import io.katharsis.resource.annotations.JsonApiIncludeByDefault;
+//import io.katharsis.resource.annotations.JsonApiRelation;
 import io.katharsis.resource.annotations.JsonApiResource;
 import io.katharsis.resource.annotations.JsonApiToMany;
-import io.katharsis.resource.annotations.LookupIncludeBehavior;
-import io.katharsis.resource.annotations.SerializeType;
+//import io.katharsis.resource.annotations.LookupIncludeBehavior;
+//import io.katharsis.resource.annotations.SerializeType;
 
 @Entity
 @JsonApiResource(type = "customer")
@@ -40,7 +40,9 @@ public class Customer {
 	private Set<Trip> trips = new HashSet<Trip>();
 	
 	
-	Customer() {}
+	public Customer() { 
+		// for JPA 
+	}
 	
 	public Customer(String name, String emailAddress) {
 		this.name = name;

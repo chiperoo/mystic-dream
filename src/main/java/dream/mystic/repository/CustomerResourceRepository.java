@@ -3,6 +3,8 @@
  */
 package dream.mystic.repository;
 
+import java.util.concurrent.atomic.AtomicLong;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -13,7 +15,9 @@ import io.katharsis.resource.list.ResourceList;
 
 @Component
 public class CustomerResourceRepository extends ResourceRepositoryBase<Customer,Long> {
-
+	
+	private static final AtomicLong ID_GENERATOR = new AtomicLong();
+	
 	@Autowired
 	private CustomerRepository customerRepository;
 	
@@ -23,17 +27,24 @@ public class CustomerResourceRepository extends ResourceRepositoryBase<Customer,
 
 	@Override
     public synchronized <S extends Customer> S save(S customer) {
-            customerRepository.save(customer);
-            return customer;
+//		if(customer.getId() == null) {
+//			long count = customerRepository.count();
+//			if(count > ID_GENERATOR.get()) {
+//				ID_GENERATOR.set(customerRepository.count() + 1);
+//			}
+//			customer.setId(ID_GENERATOR.getAndIncrement());
+//		}
+		customerRepository.save(customer);
+		return customer;
 	}
 	
 	@Override
-	public Customer findOne(Long customerId, QuerySpec arg0) {
+	public synchronized Customer findOne(Long customerId, QuerySpec arg0) {
 		return customerRepository.findOne(customerId);
 	}
 	
 	@Override
-	public ResourceList<Customer> findAll(QuerySpec arg0) {
+	public synchronized ResourceList<Customer> findAll(QuerySpec arg0) {
 		return arg0.apply(customerRepository.findAll());
 	}
 }

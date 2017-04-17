@@ -90,9 +90,6 @@ public class TripManagerControllerTest {
         this.customer = customerRepository.save(new Customer(name, name + "@user.email"));
         this.trip = tripRepository.save(new Trip(this.customer, "description"));
         
-        //tripDetailRepository.save(new TripDetail(customer,
-		//trip, (int)counter.incrementAndGet(), "Step " + counter.get()));
-        
         this.tripDetailList.add(tripDetailRepository.save(new TripDetail(this.customer, this.trip, 1, "Step 1")));
         this.tripDetailList.add(tripDetailRepository.save(new TripDetail(this.customer, this.trip, 2, "Step 2")));
     }

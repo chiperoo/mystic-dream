@@ -1,7 +1,6 @@
 package dream.mystic.domain;
 
 import java.sql.Timestamp;
-import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -44,7 +43,8 @@ public class TripDetail implements Comparable<TripDetail> {
 
     private Boolean deleted;
     
-    TripDetail() {  	
+    public TripDetail() {
+    	// for JPA
     }
     
     public TripDetail(Customer customer, Trip trip, Integer sequence, String details) {

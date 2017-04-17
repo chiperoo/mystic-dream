@@ -3,9 +3,7 @@ package dream.mystic.domain;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,16 +11,16 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+//import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import io.katharsis.resource.annotations.JsonApiId;
 import io.katharsis.resource.annotations.JsonApiIncludeByDefault;
-import io.katharsis.resource.annotations.JsonApiRelation;
+//import io.katharsis.resource.annotations.JsonApiRelation;
 import io.katharsis.resource.annotations.JsonApiResource;
 import io.katharsis.resource.annotations.JsonApiToMany;
 import io.katharsis.resource.annotations.JsonApiToOne;
-import io.katharsis.resource.annotations.LookupIncludeBehavior;
-import io.katharsis.resource.annotations.SerializeType;
+//import io.katharsis.resource.annotations.LookupIncludeBehavior;
+//import io.katharsis.resource.annotations.SerializeType;
 
 @JsonApiResource(type = "trip")
 @Entity
@@ -50,13 +48,16 @@ public class Trip {
     @OneToMany(mappedBy = "trip")
 	private List<TripDetail> tripDetails = new ArrayList<TripDetail>();
 
-    Trip() {}
+    public Trip() {
+    	// for JPA
+    	this.created = new Timestamp(System.currentTimeMillis());
+    }
     
     public Trip(Customer customer, String description) {
     	this.customer = customer;
     	this.description = description;
-    	createdById = customer.getId();
-    	created = new Timestamp(System.currentTimeMillis());
+    	this.createdById = customer.getId();
+    	this.created = new Timestamp(System.currentTimeMillis());
     }
     
     /**
@@ -123,7 +124,7 @@ public class Trip {
 	public void setCustomer(Customer customer) {
 		this.customer = customer;
 	}
-
+	
 	public String getDescription() {
 		return description;
 	}

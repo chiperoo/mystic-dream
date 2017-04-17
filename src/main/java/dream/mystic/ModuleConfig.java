@@ -1,19 +1,19 @@
 package dream.mystic;
 
 import javax.persistence.EntityManager;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Expression;
+//import javax.persistence.criteria.CriteriaBuilder;
+//import javax.persistence.criteria.CriteriaQuery;
+//import javax.persistence.criteria.Expression;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import io.katharsis.core.internal.boot.TransactionRunner;
-import io.katharsis.jpa.JpaModule;
-import io.katharsis.jpa.JpaRepositoryConfig;
-import io.katharsis.jpa.query.criteria.JpaCriteriaExpressionFactory;
-import io.katharsis.jpa.query.criteria.JpaCriteriaQueryFactory;
+//import io.katharsis.jpa.JpaModule;
+//import io.katharsis.jpa.JpaRepositoryConfig;
+//import io.katharsis.jpa.query.criteria.JpaCriteriaExpressionFactory;
+//import io.katharsis.jpa.query.criteria.JpaCriteriaQueryFactory;
 import io.katharsis.validation.ValidationModule;
 
 @Configuration

@@ -38,8 +38,7 @@ public class MysticDreamApplication {
 	@RequestMapping("/resourcesInfo")
 	public Map<?, ?> getResources() {
 		Map<String, String> result = new HashMap<>();
-		// Add all resources (i.e. Project and Task)
-		System.out.println("***************************** registry size: " + resourceRegistry.getResources().size());
+		// Add all resources for API exposure
 		for (RegistryEntry entry : resourceRegistry.getResources()) {
 			result.put(entry.getResourceInformation().getResourceType(), resourceRegistry.getResourceUrl(entry.getResourceInformation()));
 		}
@@ -57,6 +56,7 @@ public class MysticDreamApplication {
 		
 		AtomicLong counter = new AtomicLong();
 		
+		// load up test data
 		return (evt) -> Arrays.asList(
 				"bruce,clark,barry,hal".split(","))
 				.forEach(
@@ -72,10 +72,6 @@ public class MysticDreamApplication {
 									trip, (int)counter.incrementAndGet(), "Step " + counter.get()));
 							
 						});
-		
-//		return args -> {
-//			
-//		};
 	}
 	
 

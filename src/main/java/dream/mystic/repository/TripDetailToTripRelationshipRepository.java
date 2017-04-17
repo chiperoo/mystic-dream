@@ -5,14 +5,15 @@ package dream.mystic.repository;
 
 import org.springframework.stereotype.Component;
 
-import dream.mystic.domain.Customer;
 import dream.mystic.domain.Trip;
+import dream.mystic.domain.TripDetail;
 import io.katharsis.repository.RelationshipRepositoryBase;
 
 @Component
-public class CustomerToTripRelationshipRepository extends RelationshipRepositoryBase<Customer, Long, Trip, Long> {
+public class TripDetailToTripRelationshipRepository extends RelationshipRepositoryBase<TripDetail, Long, Trip, Long> {
 
-	public CustomerToTripRelationshipRepository() {
-		super(Customer.class, Trip.class);
+	public TripDetailToTripRelationshipRepository() {
+		super(TripDetail.class, Trip.class);
 	}
+
 }
