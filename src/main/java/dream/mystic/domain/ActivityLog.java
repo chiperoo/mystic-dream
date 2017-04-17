@@ -8,8 +8,6 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.PreUpdate;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import io.katharsis.resource.annotations.JsonApiId;
 import io.katharsis.resource.annotations.JsonApiIncludeByDefault;
 import io.katharsis.resource.annotations.JsonApiResource;
@@ -24,11 +22,6 @@ public class ActivityLog {
 	@Id
 	@GeneratedValue
 	private Long id;
-	
-//	@JsonApiToOne(opposite="activityLog")
-//    @JsonApiIncludeByDefault
-//    @OneToOne
-//    private Trip trip;
 	
 	@JsonApiToOne(opposite="activityLog")
     @JsonApiIncludeByDefault
@@ -48,6 +41,8 @@ public class ActivityLog {
     
     private Timestamp lastModified;
     
+    private Long lastModifiedBy;
+    
     public ActivityLog() {
     	// for JPA
     	this.created = new Timestamp(System.currentTimeMillis());
@@ -56,11 +51,11 @@ public class ActivityLog {
     
     public ActivityLog(Customer customer, User user, String details) {
     	this.customer = customer;
-//    	this.trip = trip;
     	this.user = user;
-    	createdById = user.getId();
+    	this.createdById = user.getId();
     	this.created = new Timestamp(System.currentTimeMillis());
     	this.lastModified = created;
+    	this.lastModifiedBy = user.getId();
     	
     	this.description = details;
     }
@@ -135,6 +130,14 @@ public class ActivityLog {
 
 	public void setLastModified(Timestamp lastModified) {
 		this.lastModified = lastModified;
+	}
+
+	public Long getLastModifiedBy() {
+		return lastModifiedBy;
+	}
+
+	public void setLastModifiedBy(Long lastModifiedBy) {
+		this.lastModifiedBy = lastModifiedBy;
 	}
 	
 }

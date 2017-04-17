@@ -13,4 +13,6 @@ public interface ActivityLogRepository extends JpaRepository<ActivityLog, Long> 
 	//Collection<ActivityLog> findByTripId(Long id);
 	
 	Collection<ActivityLog> findByCustomerId(Long id);
+	
+	Collection<ActivityLog> findByUserId(Long id);
 }

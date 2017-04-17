@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.katharsis.resource.registry.RegistryEntry;
 import io.katharsis.resource.registry.ResourceRegistry;
-//import io.katharsis.spring.boot.KatharsisConfigV2;
 import io.katharsis.spring.boot.v3.KatharsisConfigV3;
 import dream.mystic.domain.Customer;
 import dream.mystic.domain.Trip;
@@ -49,7 +48,7 @@ public class MysticDreamApplication {
 		return result;
 	}
 	
-
+	// Spring Boot 
 	public static void main(String[] args) {
 		SpringApplication.run(MysticDreamApplication.class, args);
 	}
@@ -88,6 +87,14 @@ public class MysticDreamApplication {
 									user, "Found trip to " + trip.getDescription()));
 							activityLogRepository.save(new ActivityLog(customer,
 									user, "Booked to " + trip.getDescription()));
+							
+							// add customer to trip
+							trip.addCustomer(customer);
+							tripRepository.save(trip);
+							
+							// add trip to customer
+							customer.addTrip(trip);
+							customerRepository.save(customer);
 							
 						});
 	}

@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
@@ -24,8 +25,8 @@ public class Customer extends Person{
     @OneToMany(mappedBy = "customer")
 	private List<ActivityLog> activityLog = new ArrayList<ActivityLog>();
 	
-	@JsonApiToMany(opposite = "customer")
-	@ManyToMany(mappedBy = "customer")
+	@JsonApiToMany(opposite = "customers")
+	@ManyToMany(fetch = FetchType.EAGER, mappedBy = "customers")
 	private Set<Trip> trips = new HashSet<Trip>();
 	
 	public Customer() { 
@@ -37,6 +38,17 @@ public class Customer extends Person{
 		setEmailAddress(emailAddress);
 	}
 
+	
+	// one-offs for the set
+	public Boolean addTrip(Trip trip) {
+		return trips.add(trip);
+		
+	}
+	
+	public void removeTrip(Trip trip) {
+		trips.remove(trip);
+	}
+	
 
     ///////////////////////////////////
     // Getters / setters

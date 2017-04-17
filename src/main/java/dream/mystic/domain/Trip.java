@@ -4,13 +4,14 @@ import java.sql.Timestamp;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 
 import io.katharsis.resource.annotations.JsonApiId;
-import io.katharsis.resource.annotations.JsonApiIncludeByDefault;
 import io.katharsis.resource.annotations.JsonApiResource;
 import io.katharsis.resource.annotations.JsonApiToMany;
 
@@ -28,16 +29,11 @@ public class Trip {
 	
     private String description;
     
-    @JsonApiToMany(opposite="trip")
-    @JsonApiIncludeByDefault
-    @ManyToMany
-    private Set<Customer> customer = new HashSet<Customer>();
+    @JsonApiToMany(opposite="trips")
+    //@JsonApiIncludeByDefault
+    @ManyToMany(fetch = FetchType.EAGER)
+    private Set<Customer> customers = new HashSet<Customer>();
     
-//    @JsonApiRelation(lookUp=LookupIncludeBehavior.AUTOMATICALLY_WHEN_NULL,serialize=SerializeType.ONLY_ID)
-//	@JsonApiToMany(opposite = "trip")
-//    @OneToMany(mappedBy = "trip")
-//	private Set<ActivityLog> activityLog = new HashSet<ActivityLog>();
-
     public Trip() {
     	// for JPA
     	this.created = new Timestamp(System.currentTimeMillis());
@@ -49,6 +45,15 @@ public class Trip {
     }
         
 
+    // one-offs for the customers
+    public Boolean addCustomer(Customer customer) {
+    	return customers.add(customer);
+    }
+    
+    public void removeCustomer(Customer customer) {
+    	customers.remove(customer);
+    }
+    
     ///////////////////////////////////
     // Getters / setters
     ///////////////////////////////////
@@ -76,12 +81,12 @@ public class Trip {
 		this.description = description;
 	}
 
-	public Set<Customer> getCustomer() {
-		return customer;
+	public Set<Customer> getCustomers() {
+		return customers;
 	}
 
-	public void setCustomer(Set<Customer> customer) {
-		this.customer = customer;
+	public void setCustomers(Set<Customer> customers) {
+		this.customers = customers;
 	}
     
 }
