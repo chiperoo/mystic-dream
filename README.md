@@ -109,6 +109,7 @@ POST http://localhost:8080/api/activityLog
 }
 ```
 
+```
 # Create activity log entry with trip
 POST http://localhost:8080/api/activityLog
 
@@ -154,3 +155,8 @@ PATCH http://localhost:8080/api/trip/5/relationships/customer
 
 
 ## Implementation
+
+
+### Class structure
+![class diagram](./images/mystic.png)
+
