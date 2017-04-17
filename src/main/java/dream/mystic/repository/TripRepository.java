@@ -8,8 +8,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import dream.mystic.domain.Trip;
 
 public interface TripRepository extends JpaRepository<Trip, Long> {
-	//Optional<Trip> findById(Long id);
+	Optional<Trip> findById(Long id);
 
-	Collection<Trip> findByCustomerId(Long id);
+//	Collection<Trip> findByCustomerId(Long id);
 
 }

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import dream.mystic.domain.Trip;
 import dream.mystic.repository.CustomerRepository;
-import dream.mystic.repository.TripDetailRepository;
+import dream.mystic.repository.ActivityLogRepository;
 import dream.mystic.repository.TripRepository;
 
 @RestController
@@ -20,15 +20,15 @@ public class TripManagerController {
 
 	private final CustomerRepository customerRepository;
 	private final TripRepository tripRepository;
-	private final TripDetailRepository tripDetailRepository;
+	private final ActivityLogRepository activityLogRepository;
 	
 	@Autowired
 	TripManagerController(CustomerRepository customerRepository,
 						   TripRepository tripRepository,
-						   TripDetailRepository tripDetailRepository) {
+						   ActivityLogRepository activityLogRepository) {
 		this.customerRepository = customerRepository;
 		this.tripRepository = tripRepository;
-		this.tripDetailRepository = tripDetailRepository;
+		this.activityLogRepository = activityLogRepository;
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/{tripId}")

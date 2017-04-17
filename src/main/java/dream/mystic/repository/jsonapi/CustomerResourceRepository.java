@@ -1,22 +1,19 @@
 /**
  *  This class is used for Katharsis so that it can publish API operations
  */
-package dream.mystic.repository;
-
-import java.util.concurrent.atomic.AtomicLong;
+package dream.mystic.repository.jsonapi;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import dream.mystic.domain.Customer;
+import dream.mystic.repository.CustomerRepository;
 import io.katharsis.queryspec.QuerySpec;
 import io.katharsis.repository.ResourceRepositoryBase;
 import io.katharsis.resource.list.ResourceList;
 
 @Component
 public class CustomerResourceRepository extends ResourceRepositoryBase<Customer,Long> {
-	
-	private static final AtomicLong ID_GENERATOR = new AtomicLong();
 	
 	@Autowired
 	private CustomerRepository customerRepository;
@@ -27,13 +24,6 @@ public class CustomerResourceRepository extends ResourceRepositoryBase<Customer,
 
 	@Override
     public synchronized <S extends Customer> S save(S customer) {
-//		if(customer.getId() == null) {
-//			long count = customerRepository.count();
-//			if(count > ID_GENERATOR.get()) {
-//				ID_GENERATOR.set(customerRepository.count() + 1);
-//			}
-//			customer.setId(ID_GENERATOR.getAndIncrement());
-//		}
 		customerRepository.save(customer);
 		return customer;
 	}

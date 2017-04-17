@@ -78,10 +78,64 @@ POST http://localhost:8080/api/trip
   "data": {
     "type": "trip",
     "attributes": {
-      "description": "Mars adventure",
-      "createdById": 1
+      "description": "Mars adventure"
     }
   }
+}
+```
+
+``` 
+# Create activity log entry
+POST http://localhost:8080/api/activityLog
+
+# body; type: json
+{
+  "data": {
+    "type": "activityLog",
+    "attributes": {
+        "description": "Customer called wanting a trip",
+        "createdById": "1",
+        "activeTrip": "true"
+    },
+    "relationships": {
+    	"customer": {
+        	"data": {
+        		"id": "1",
+            	"type": "customer"
+     		}
+		}
+  	}
+	}
+}
+```
+
+# Create activity log entry with trip
+POST http://localhost:8080/api/activityLog
+
+# body; type: json
+{
+  "data": {
+    "type": "activityLog",
+    "attributes": {
+        "description": "Customer booked a trip to Mars",
+        "createdById": "1",
+        "activeTrip": "true"
+    },
+    "relationships": {
+    	"customer": {
+        	"data": {
+        		"id": "1",
+            	"type": "customer"
+     		}
+		},
+		"trip": {
+          "data": {
+            "id": "5",
+            "type": "trip"
+        	}
+        }
+  	}
+	}
 }
 ```
 

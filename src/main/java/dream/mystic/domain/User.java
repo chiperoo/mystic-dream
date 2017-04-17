@@ -1,43 +1,37 @@
 package dream.mystic.domain;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import io.katharsis.resource.annotations.JsonApiId;
 import io.katharsis.resource.annotations.JsonApiResource;
 import io.katharsis.resource.annotations.JsonApiToMany;
 
-
 @Entity
-@JsonApiResource(type = "customer")
+@JsonApiResource(type = "user")
 @SuppressWarnings("deprecation")
-public class Customer extends Person{
-	
+public class User extends Person {
+
 	// Karthasis might not fully support inheritance and 
 	// different sets of activityLogs
-	@JsonApiToMany(opposite = "customer")
-    @OneToMany(mappedBy = "customer")
+	@JsonApiToMany(opposite = "user")
+    @OneToMany(mappedBy = "user")
 	private List<ActivityLog> activityLog = new ArrayList<ActivityLog>();
 	
-	@JsonApiToMany(opposite = "customer")
-	@ManyToMany(mappedBy = "customer")
-	private Set<Trip> trips = new HashSet<Trip>();
-	
-	public Customer() { 
+	public User() { 
 		// for JPA 
 	}
 	
-	public Customer(String name, String emailAddress) {
+	public User(String name, String emailAddress) {
 		setName(name);
 		setEmailAddress(emailAddress);
 	}
-
-
+	
     ///////////////////////////////////
     // Getters / setters
     ///////////////////////////////////
@@ -47,13 +41,5 @@ public class Customer extends Person{
 
 	public void setActivityLog(List<ActivityLog> activityLog) {
 		this.activityLog = activityLog;
-	}
-	
-	public Set<Trip> getTrips() {
-		return trips;
-	}
-
-	public void setTrips(Set<Trip> trips) {
-		this.trips = trips;
 	}
 }

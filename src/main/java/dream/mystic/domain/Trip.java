@@ -1,26 +1,18 @@
 package dream.mystic.domain;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-
-//import com.fasterxml.jackson.annotation.JsonIgnore;
+import javax.persistence.ManyToMany;
 
 import io.katharsis.resource.annotations.JsonApiId;
 import io.katharsis.resource.annotations.JsonApiIncludeByDefault;
-//import io.katharsis.resource.annotations.JsonApiRelation;
 import io.katharsis.resource.annotations.JsonApiResource;
 import io.katharsis.resource.annotations.JsonApiToMany;
-import io.katharsis.resource.annotations.JsonApiToOne;
-//import io.katharsis.resource.annotations.LookupIncludeBehavior;
-//import io.katharsis.resource.annotations.SerializeType;
 
 @JsonApiResource(type = "trip")
 @Entity
@@ -31,65 +23,32 @@ public class Trip {
 	@GeneratedValue
 	@JsonApiId
 	private Long id;
-	
-	private Long createdById;
     
     private Timestamp created;
 	
-    @JsonApiToOne(opposite="trip")
-    @JsonApiIncludeByDefault
-    @ManyToOne
-    private Customer customer;
-    
     private String description;
     
+    @JsonApiToMany(opposite="trip")
+    @JsonApiIncludeByDefault
+    @ManyToMany
+    private Set<Customer> customer = new HashSet<Customer>();
+    
 //    @JsonApiRelation(lookUp=LookupIncludeBehavior.AUTOMATICALLY_WHEN_NULL,serialize=SerializeType.ONLY_ID)
-	@JsonApiToMany(opposite = "trip")
-    @OneToMany(mappedBy = "trip")
-	private List<TripDetail> tripDetails = new ArrayList<TripDetail>();
+//	@JsonApiToMany(opposite = "trip")
+//    @OneToMany(mappedBy = "trip")
+//	private Set<ActivityLog> activityLog = new HashSet<ActivityLog>();
 
     public Trip() {
     	// for JPA
     	this.created = new Timestamp(System.currentTimeMillis());
     }
     
-    public Trip(Customer customer, String description) {
-    	this.customer = customer;
+    public Trip(String description) {
     	this.description = description;
-    	this.createdById = customer.getId();
     	this.created = new Timestamp(System.currentTimeMillis());
     }
-    
-    /**
-     * 
-     * @param td
-     * @return
-     */
-    public List<TripDetail> addTripDetail(TripDetail td) {
-    	
-    	tripDetails.add(td);
-    	Collections.sort(tripDetails);
-    	reorderTripDetails();
-    	return tripDetails;
-    }
-    
-    public List<TripDetail> deleteTripDetail(TripDetail td, Long userId) {
-    	int index = tripDetails.indexOf(td);
-    	if(index >= 0) {
-    		tripDetails.remove(td);
-    		td.deleteDetail(userId);
-    		reorderTripDetails();
-    	}
-    	
-    	return tripDetails;
-    }
-    
-    private void reorderTripDetails() {
-    	
-    }
+        
 
-    
-    
     ///////////////////////////////////
     // Getters / setters
     ///////////////////////////////////
@@ -101,28 +60,12 @@ public class Trip {
 		this.id = id;
 	}
 
-	public Long getCreatedById() {
-		return createdById;
-	}
-
-	public void setCreatedById(Long createdById) {
-		this.createdById = createdById;
-	}
-
 	public Timestamp getCreated() {
 		return created;
 	}
 
 	public void setCreated(Timestamp created) {
 		this.created = created;
-	}
-
-	public Customer getCustomer() {
-		return customer;
-	}
-
-	public void setCustomer(Customer customer) {
-		this.customer = customer;
 	}
 	
 	public String getDescription() {
@@ -133,12 +76,12 @@ public class Trip {
 		this.description = description;
 	}
 
-	public List<TripDetail> getTripDetails() {
-		return tripDetails;
+	public Set<Customer> getCustomer() {
+		return customer;
 	}
 
-	public void setTripDetails(List<TripDetail> tripDetails) {
-		this.tripDetails = tripDetails;
+	public void setCustomer(Set<Customer> customer) {
+		this.customer = customer;
 	}
     
 }

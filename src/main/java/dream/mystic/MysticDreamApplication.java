@@ -1,7 +1,9 @@
 package dream.mystic;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -21,10 +23,12 @@ import io.katharsis.resource.registry.ResourceRegistry;
 import io.katharsis.spring.boot.v3.KatharsisConfigV3;
 import dream.mystic.domain.Customer;
 import dream.mystic.domain.Trip;
-import dream.mystic.domain.TripDetail;
+import dream.mystic.domain.User;
+import dream.mystic.domain.ActivityLog;
 import dream.mystic.repository.CustomerRepository;
-import dream.mystic.repository.TripDetailRepository;
+import dream.mystic.repository.ActivityLogRepository;
 import dream.mystic.repository.TripRepository;
+import dream.mystic.repository.UserRepository;
 
 @Configuration
 @RestController
@@ -51,25 +55,39 @@ public class MysticDreamApplication {
 	}
 	
 	@Bean
-	CommandLineRunner init(CustomerRepository customerRepository,
-			TripRepository tripRepository, TripDetailRepository tripDetailRepository) {
-		
+	CommandLineRunner init(CustomerRepository customerRepository, UserRepository userRepository,
+			TripRepository tripRepository, ActivityLogRepository activityLogRepository) {
+
 		AtomicLong counter = new AtomicLong();
 		
+		// create default trips
+		List<Trip> tripList = new ArrayList<Trip>();
+		Arrays.asList(
+				"London,Paris,Tokyo,Sydney".split(","))
+				.forEach(
+						a -> {
+							Trip trip = tripRepository.save(new Trip(a));
+							tripList.add(trip);
+						});
+		
+		// create default admin user
+		User user = userRepository.save(new User("admin", "admin@admin.com"));
+
 		// load up test data
 		return (evt) -> Arrays.asList(
 				"bruce,clark,barry,hal".split(","))
 				.forEach(
 						a -> {
-							counter.set(0L);
 							Customer customer = customerRepository.save(new Customer(a,
 									a + "@fake.email"));
-							Trip trip = tripRepository.save(new Trip(customer,
-									"Justice League Party"));
-							tripDetailRepository.save(new TripDetail(customer,
-									trip, (int)counter.incrementAndGet(), "Step " + counter.get()));
-							tripDetailRepository.save(new TripDetail(customer,
-									trip, (int)counter.incrementAndGet(), "Step " + counter.get()));
+							// grab a unique trip
+							Trip trip = tripList.get((int)counter.getAndIncrement());
+							
+							// add base activity log entries
+							activityLogRepository.save(new ActivityLog(customer,
+									user, "Found trip to " + trip.getDescription()));
+							activityLogRepository.save(new ActivityLog(customer,
+									user, "Booked to " + trip.getDescription()));
 							
 						});
 	}

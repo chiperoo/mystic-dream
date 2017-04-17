@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import dream.mystic.domain.Customer;
 import dream.mystic.repository.CustomerRepository;
-import dream.mystic.repository.TripDetailRepository;
+import dream.mystic.repository.ActivityLogRepository;
 import dream.mystic.repository.TripRepository;
 
 @RestController
@@ -18,15 +18,15 @@ public class CustomerController {
 
 	private final CustomerRepository customerRepository;
 	private final TripRepository tripRepository;
-	private final TripDetailRepository tripDetailRepository;
+	private final ActivityLogRepository activityLogRepository;
 	
 	@Autowired
 	CustomerController(CustomerRepository customerRepository,
 						   TripRepository tripRepository,
-						   TripDetailRepository tripDetailRepository) {
+						   ActivityLogRepository activityLogRepository) {
 		this.customerRepository = customerRepository;
 		this.tripRepository = tripRepository;
-		this.tripDetailRepository = tripDetailRepository;
+		this.activityLogRepository = activityLogRepository;
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/all")
