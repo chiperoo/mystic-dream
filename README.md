@@ -239,7 +239,7 @@ As shown in some of the sample calls, [filtering](http://katharsis-jsonapi.readt
 ![class diagram](./images/mystic.png)
 
 ## Code
-Assuming that a Spring application is created from the [Spring REST tutorial](http://spring.io/guides/tutorials/bookmarks/), this will focus on the changes needed to integrate Karthasis and json:api.
+Assuming that a Spring application is created from the [Spring REST tutorial](http://spring.io/guides/tutorials/bookmarks/), this document will focus on the changes needed to integrate Karthasis and json:api.
 
 ### Spring originated code
 ```
@@ -280,7 +280,7 @@ dream.mystic.repository.jsonapi/
 
 The files in the `jsonapi` package breakdown as:
 
-* `*ResourceRepository.java` is the Katharsis equivalent to the JPA *Repository.java files. Katharsis uses these files to publish API operations
+* `<X>ResourceRepository.java` is the Katharsis equivalent to the JPA `<X>Repository.java` files. Katharsis uses these files to publish API operations
 * `<X>To<Y>RelationshipRepository.java` files handle the unidirectional relationships between resources X and Y. This is required when there is an annotation `@JsonApiToOne` or `@JsonApiToMany` of field Y in the X class. 
     + Because `<X>To<Y>` is unidirectional, there also needs to be a `<Y>To<X>RelationshipRepository.java` file to handle the other side of the relationship.
 
@@ -305,6 +305,17 @@ Add the following dependencies to the `pom.xml` file.
       <artifactId>katharsis-jpa</artifactId>
       <version>3.0.1</version>
     </dependency>
+```
+
+### Application.properties
+This defines many of Katharsis' properties.
+
+```
+katharsis.resourcePackage=io.katharsis.example.springboot.simple.domain
+katharsis.domainName=http://localhost:8080
+katharsis.pathPrefix=/api
+katharsis.default-page-limit=
+katharsis.jpa.enabled=false
 ```
 
 ### Classes / Models / Resources
