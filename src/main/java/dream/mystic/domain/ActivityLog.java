@@ -41,7 +41,7 @@ public class ActivityLog {
     
     private Timestamp lastModified;
     
-    private Long lastModifiedBy;
+    private Long lastModifiedById;
     
     public ActivityLog() {
     	// for JPA
@@ -55,7 +55,7 @@ public class ActivityLog {
     	this.createdById = user.getId();
     	this.created = new Timestamp(System.currentTimeMillis());
     	this.lastModified = created;
-    	this.lastModifiedBy = user.getId();
+    	this.lastModifiedById = user.getId();
     	
     	this.description = details;
     }
@@ -63,6 +63,8 @@ public class ActivityLog {
     @PreUpdate
     private void updateLastModified() {
     	setLastModified(new Timestamp(System.currentTimeMillis()));
+    	if(lastModifiedById == null)
+    		lastModifiedById = createdById;
     }
     
     ///////////////////////////////////
@@ -132,12 +134,12 @@ public class ActivityLog {
 		this.lastModified = lastModified;
 	}
 
-	public Long getLastModifiedBy() {
-		return lastModifiedBy;
+	public Long getLastModifiedById() {
+		return lastModifiedById;
 	}
 
-	public void setLastModifiedBy(Long lastModifiedBy) {
-		this.lastModifiedBy = lastModifiedBy;
+	public void setLastModifiedById(Long lastModifiedById) {
+		this.lastModifiedById = lastModifiedById;
 	}
 	
 }

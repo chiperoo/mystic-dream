@@ -1,5 +1,9 @@
 /**
- *  This class is used for Katharsis so to know the relationship between domain objects
+ *  This class is used for Katharsis so that it can publish API operations
+ *  
+ *  Relationships need to be explicitly defined.
+ *  Many to Many relationships are even more verbose
+ *  
  */
 package dream.mystic.repository.jsonapi;
 
@@ -9,7 +13,6 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import dream.mystic.domain.ActivityLog;
 import dream.mystic.domain.Customer;
 import dream.mystic.domain.Trip;
 import dream.mystic.repository.CustomerRepository;
@@ -66,11 +69,4 @@ public class CustomerToTripRelationshipRepository extends RelationshipRepository
         return args0.apply(customer.getTrips());
     }
     
-    
-//	@Override
-//	public Trip findOne(Long customerlId, QuerySpec arg0) {
-//		// not for many-to-many
-//		return null;
-//	}
-	
 }

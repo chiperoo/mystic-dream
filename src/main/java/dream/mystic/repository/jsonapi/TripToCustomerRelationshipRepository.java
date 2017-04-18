@@ -1,5 +1,9 @@
 /**
- *  This class is used for Katharsis so to know the relationship between domain objects
+ *  This class is used for Katharsis so that it can publish API operations
+ *  
+ *  Relationships need to be explicitly defined.
+ *  Many to Many relationships are even more verbose
+ *  
  */
 package dream.mystic.repository.jsonapi;
 

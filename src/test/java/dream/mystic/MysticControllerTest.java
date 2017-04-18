@@ -36,7 +36,7 @@ import dream.mystic.repository.TripRepository;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = MysticDreamApplication.class)
 @WebAppConfiguration
-public class TripManagerControllerTest {
+public class MysticControllerTest {
 
 	private MediaType contentType = new MediaType(MediaType.APPLICATION_JSON.getType(),
             MediaType.APPLICATION_JSON.getSubtype(),
