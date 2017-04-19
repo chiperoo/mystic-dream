@@ -40,6 +40,8 @@ public class ActivityLog {
     
     private String description;
     
+    private Boolean important;
+    
     private Long createdById;
     
     private Timestamp created;
@@ -60,6 +62,7 @@ public class ActivityLog {
     	// for JPA
     	this.created = new Timestamp(System.currentTimeMillis());
     	this.lastModified = created;
+    	this.important = false;
     }
     
     public ActivityLog(Customer customer, User user, String details) {
@@ -69,6 +72,7 @@ public class ActivityLog {
     	this.created = new Timestamp(System.currentTimeMillis());
     	this.lastModified = created;
     	this.lastModifiedById = user.getId();
+    	this.important = false;
     	
     	this.description = details;
     }
@@ -113,6 +117,14 @@ public class ActivityLog {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public Boolean getImportant() {
+		return important;
+	}
+
+	public void setImportant(Boolean important) {
+		this.important = important;
 	}
 
 	public Long getCreatedById() {

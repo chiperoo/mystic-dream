@@ -211,6 +211,21 @@ POST http://localhost:8080/mystic/3/addTrip/5
 ```
 
 ```
+# Flag an activity log record as important
+PATCH http://localhost:8080/api/activityLog/2
+
+# body; type: json
+ {
+    "data": {
+      "type": "activityLog",
+      "attributes": {
+        "important": "true"
+      }
+    }
+  }
+```
+
+```
 #  Remove a trip from customer 3
 POST http://localhost:8080/api/activityLog
 
@@ -257,7 +272,7 @@ GET http://localhost:8080/api/trip/4/customers
 
 ```
 #  View the activity logs created by admin user 1, sorted by lastModified DESC
-GET http://localhost:8080/api/activityLog/?filter[user][id]=1&sort=-lastModified
+GET http://localhost:8080/api/activityLog/?filter[activityLog][user][id]=1&sort=-lastModified
 ```
 
 ### Filtering and Sorting

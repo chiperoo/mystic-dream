@@ -174,4 +174,14 @@ public class MysticDreamApplicationTests extends BaseTest {
 		response.assertThat().body(matchesJsonSchema(jsonApiSchema));
 	}
 	
+	@Test
+	public void updateActivityLogEntry() {
+		Map<String,Object> attributeMap = new ImmutableMap.Builder<String,Object>().put("important", "true").build();
+		
+		Map dataMap = ImmutableMap.of("data", ImmutableMap.of("type", "activityLog", "attributes", attributeMap));
+		
+		RestAssured.given().contentType("application/json").body(dataMap).when().patch("/api/activityLog/2").then()
+				.statusCode(OK.value());
+	}
+	
 }
