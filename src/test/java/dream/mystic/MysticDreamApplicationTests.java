@@ -142,4 +142,27 @@ public class MysticDreamApplicationTests extends BaseTest {
 		RestAssured.given().contentType("application/json").body(dataMap).when().patch("/api/user/1").then()
 				.statusCode(OK.value());
 	}
+	
+	@Test
+	public void testCreateActivityLogEntry() {
+		Map<String, Object> attributeMap = new ImmutableMap.Builder<String, Object>().put("createdById", "1")
+				.put("description", "test activity log entry").build();
+		
+		Map<String, Object> userMap = new ImmutableMap.Builder<String, Object>().put("id","1").put("type","user").build();
+		Map<String, Object> customerMap = new ImmutableMap.Builder<String, Object>().put("id","2").put("type","customer").build();
+		
+		Map user = ImmutableMap.of("data", userMap);
+		Map customer =  ImmutableMap.of("data", customerMap);
+		
+		Map<String, Object> relationshipMap = new ImmutableMap.Builder<String, Object>().put("user", user)
+				.put("customer", customer).build();
+		
+
+		Map dataMap = ImmutableMap.of("data", ImmutableMap.of("type", "activityLog", "attributes", attributeMap, 
+				"relationships", relationshipMap));
+
+		ValidatableResponse response = RestAssured.given().contentType("application/json").body(dataMap).when().post("/api/activityLog")
+				.then().statusCode(CREATED.value());
+		response.assertThat().body(matchesJsonSchema(jsonApiSchema));
+	}
 }

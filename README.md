@@ -171,7 +171,7 @@ POST http://localhost:8080/api/activityLog
       	"customer": {
           	"data": {
           		"id": "3",
-              	"type": "customer"
+              "type": "customer"
        		}
   		}
       }
