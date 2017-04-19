@@ -12,6 +12,8 @@ import javax.persistence.OneToMany;
 
 import io.katharsis.resource.annotations.JsonApiResource;
 import io.katharsis.resource.annotations.JsonApiToMany;
+import io.katharsis.resource.links.LinksInformation;
+import io.katharsis.resource.meta.MetaInformation;
 
 
 @Entity
@@ -20,7 +22,7 @@ import io.katharsis.resource.annotations.JsonApiToMany;
 public class Customer extends Person{
 	
 	// Karthasis might not fully support inheritance and 
-	// different sets of activityLogs
+	// different sets of activityLogs and different annotations
 	@JsonApiToMany(opposite = "customer")
     @OneToMany(mappedBy = "customer")
 	private List<ActivityLog> activityLog = new ArrayList<ActivityLog>();
@@ -67,5 +69,5 @@ public class Customer extends Person{
 
 	public void setTrips(Set<Trip> trips) {
 		this.trips = trips;
-	}
+	}	
 }

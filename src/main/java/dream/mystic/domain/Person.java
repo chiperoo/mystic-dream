@@ -3,8 +3,13 @@ package dream.mystic.domain;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.Transient;
 
 import io.katharsis.resource.annotations.JsonApiId;
+import io.katharsis.resource.annotations.JsonApiLinksInformation;
+import io.katharsis.resource.annotations.JsonApiMetaInformation;
+import io.katharsis.resource.links.LinksInformation;
+import io.katharsis.resource.meta.MetaInformation;
 
 @MappedSuperclass
 public abstract class Person {
@@ -16,8 +21,7 @@ public abstract class Person {
 		
 	private String name;
 	
-	private String emailAddress;
-	
+	private String emailAddress;	
 	
     ///////////////////////////////////
     // Getters / setters

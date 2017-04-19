@@ -7,11 +7,16 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.PreUpdate;
+import javax.persistence.Transient;
 
 import io.katharsis.resource.annotations.JsonApiId;
 import io.katharsis.resource.annotations.JsonApiIncludeByDefault;
+import io.katharsis.resource.annotations.JsonApiLinksInformation;
+import io.katharsis.resource.annotations.JsonApiMetaInformation;
 import io.katharsis.resource.annotations.JsonApiResource;
 import io.katharsis.resource.annotations.JsonApiToOne;
+import io.katharsis.resource.links.LinksInformation;
+import io.katharsis.resource.meta.MetaInformation;
 
 @Entity
 @JsonApiResource(type = "activityLog")
@@ -42,6 +47,14 @@ public class ActivityLog {
     private Timestamp lastModified;
     
     private Long lastModifiedById;
+    
+	@JsonApiMetaInformation
+	@Transient
+	private MetaInformation metaInformation;
+	
+	@JsonApiLinksInformation
+	@Transient
+	private LinksInformation linksInformation;
     
     public ActivityLog() {
     	// for JPA
@@ -77,14 +90,6 @@ public class ActivityLog {
 	public void setId(Long id) {
 		this.id = id;
 	}
-
-//	public Trip getTrip() {
-//		return trip;
-//	}
-//
-//	public void setTrip(Trip trip) {
-//		this.trip = trip;
-//	}
 
 	public Customer getCustomer() {
 		return customer;
@@ -140,6 +145,21 @@ public class ActivityLog {
 
 	public void setLastModifiedById(Long lastModifiedById) {
 		this.lastModifiedById = lastModifiedById;
-	}
+	}	
 	
+	public MetaInformation getMetaInformation() {
+		return metaInformation;
+	}
+
+	public void setMetaInformation(MetaInformation metaInformation) {
+		this.metaInformation = metaInformation;
+	}
+
+	public LinksInformation getLinksInformation() {
+		return linksInformation;
+	}
+
+	public void setLinksInformation(LinksInformation linksInformation) {
+		this.linksInformation = linksInformation;
+	}
 }

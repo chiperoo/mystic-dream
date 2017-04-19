@@ -37,6 +37,9 @@ GET http://localhost:8080/api/customer/?sort=name
 
 # Sorted by name DESC
 GET http://localhost:8080/api/customer/?sort=-name
+
+# Specify pagination
+http://localhost:8080/api/customer?page[limit]=2
 ```
 
 ```

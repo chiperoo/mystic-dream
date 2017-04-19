@@ -9,10 +9,15 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.Transient;
 
 import io.katharsis.resource.annotations.JsonApiId;
+import io.katharsis.resource.annotations.JsonApiLinksInformation;
+import io.katharsis.resource.annotations.JsonApiMetaInformation;
 import io.katharsis.resource.annotations.JsonApiResource;
 import io.katharsis.resource.annotations.JsonApiToMany;
+import io.katharsis.resource.links.LinksInformation;
+import io.katharsis.resource.meta.MetaInformation;
 
 @Entity
 @JsonApiResource(type = "trip")
@@ -27,6 +32,14 @@ public class Trip {
     private Timestamp created;
 	
     private String description;
+    
+	@JsonApiMetaInformation
+	@Transient
+	private MetaInformation metaInformation;
+	
+	@JsonApiLinksInformation
+	@Transient
+	private LinksInformation linksInformation;
     
     @JsonApiToMany(opposite="trips")
     //@JsonApiIncludeByDefault
@@ -86,6 +99,22 @@ public class Trip {
 
 	public void setCustomers(Set<Customer> customers) {
 		this.customers = customers;
+	}
+
+	public MetaInformation getMetaInformation() {
+		return metaInformation;
+	}
+
+	public void setMetaInformation(MetaInformation metaInformation) {
+		this.metaInformation = metaInformation;
+	}
+
+	public LinksInformation getLinksInformation() {
+		return linksInformation;
+	}
+
+	public void setLinksInformation(LinksInformation linksInformation) {
+		this.linksInformation = linksInformation;
 	}
     
 }
