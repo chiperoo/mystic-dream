@@ -19,8 +19,8 @@
    7. [Relationships](#relationships)
    8. [ResourceRepositories](#resourcerepositories)
    9. [RelationshipRepositories](#relationshiprepositories)
-   10. [Note](#note)
-   11. [Main class](#main-class)
+      1. [Note](#note)
+   10. [Main class](#main-class)
 
 
 ---
