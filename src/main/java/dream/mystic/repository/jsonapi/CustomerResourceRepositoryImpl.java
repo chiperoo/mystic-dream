@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 
 import dream.mystic.domain.Customer;
 import dream.mystic.repository.CustomerRepository;
+import io.katharsis.errorhandling.exception.ForbiddenException;
 import io.katharsis.errorhandling.exception.ResourceNotFoundException;
 import io.katharsis.queryspec.QuerySpec;
 import io.katharsis.repository.ResourceRepositoryBase;
@@ -57,5 +58,10 @@ public class CustomerResourceRepositoryImpl extends ResourceRepositoryBase<Custo
 		list.setLinks(new CustomerListLinks());
 		arg0.apply(customerRepository.findAll(), list);
 		return list;
+	}
+	
+	@Override
+	public void delete(Long customerId) {
+		throw new ForbiddenException("Delete is not allowed");
 	}
 }

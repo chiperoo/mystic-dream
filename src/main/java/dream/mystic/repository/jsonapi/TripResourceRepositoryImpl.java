@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import dream.mystic.domain.Trip;
 import dream.mystic.repository.TripRepository;
+import io.katharsis.errorhandling.exception.ForbiddenException;
 import io.katharsis.errorhandling.exception.ResourceNotFoundException;
 import io.katharsis.queryspec.QuerySpec;
 import io.katharsis.repository.ResourceRepositoryBase;
@@ -25,8 +26,8 @@ public class TripResourceRepositoryImpl extends ResourceRepositoryBase<Trip,Long
 
 	@Override
     public synchronized <S extends Trip> S save(S trip) {
-            tripRepository.save(trip);
-            return trip;
+		tripRepository.save(trip);
+		return trip;
 	}
 	
 	@Override
@@ -43,4 +44,8 @@ public class TripResourceRepositoryImpl extends ResourceRepositoryBase<Trip,Long
 		return arg0.apply(tripRepository.findAll());
 	}
 
+	@Override
+	public void delete(Long tripId) {
+		throw new ForbiddenException("Delete is not allowed");
+	}
 }

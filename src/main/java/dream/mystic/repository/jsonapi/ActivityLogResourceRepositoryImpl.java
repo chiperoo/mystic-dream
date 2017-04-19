@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import dream.mystic.domain.ActivityLog;
 import dream.mystic.repository.ActivityLogRepository;
+import io.katharsis.errorhandling.exception.ForbiddenException;
 import io.katharsis.errorhandling.exception.ResourceNotFoundException;
 import io.katharsis.queryspec.QuerySpec;
 import io.katharsis.repository.ResourceRepositoryBase;
@@ -41,6 +42,11 @@ public class ActivityLogResourceRepositoryImpl extends ResourceRepositoryBase<Ac
 	@Override
 	public ResourceList<ActivityLog> findAll(QuerySpec arg0) {
 		return arg0.apply(activityLogRepository.findAll());
+	}
+	
+	@Override
+	public void delete(Long activityLogId) {
+		throw new ForbiddenException("Delete is not allowed");
 	}
 
 }

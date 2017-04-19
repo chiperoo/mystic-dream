@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 
 import dream.mystic.domain.User;
 import dream.mystic.repository.UserRepository;
+import io.katharsis.errorhandling.exception.ForbiddenException;
 import io.katharsis.errorhandling.exception.ResourceNotFoundException;
 import io.katharsis.queryspec.QuerySpec;
 import io.katharsis.repository.ResourceRepositoryBase;
@@ -59,4 +60,8 @@ public class UserResourceRepositoryImpl extends ResourceRepositoryBase<User,Long
 		return list;
 	}
 
+	@Override
+	public void delete(Long userId) {
+		throw new ForbiddenException("Delete is not allowed");
+	}
 }

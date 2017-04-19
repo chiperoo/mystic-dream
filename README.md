@@ -1,5 +1,29 @@
 # Mystic Dream: Customer API
 
+## Table of Contents
+1. [Overview](#overview)
+2. [Code Template](#code-template)
+3. [Dependencies](#dependencies)
+4. [Running with Maven](#running-with-maven)
+5. [Calls](#calls)
+6. [Filtering and Sorting](#filtering-and-sorting)
+7. [Implementation](#implementation)
+   1. [Class Structure](#class-structure)
+8. [Code](#code)
+   1. [Spring Originated Code](#spring-originated-code)
+   2. [Files Required for Katharsis](#files-required-for-Katharsis)
+   3. [Pom.xml](#pomxml)
+   4. [Application.properties](#applicationproperties)
+   5. [Classes/Models/Resources](#classes--models--resources)
+   6. [IDs](#ids)
+   7. [Relationships](#relationships)
+   8. [ResourceRepositories](#resourcerepositories)
+   9. [RelationshipRepositories](#relationshiprepositories)
+   10. [Note](#note)
+   11. [Main class](#main-class)
+
+
+---
 
 ## Overview
 The support team at Mystic Dream is streamlining their customer logistics. With a spike in new customers, it is more difficult to manage and track all the steps involved in scheduling customer trips. An interface has been built.
@@ -9,7 +33,7 @@ The goal of this project is to build two APIs that:
 * Manage customer information
 * Manage and track steps in the planning process
 
-## Code template
+## Code Template
 This code borrows heavily from a [Spring REST tutorial](http://spring.io/guides/tutorials/bookmarks/) as well as the [Katharsis Spring example](https://github.com/katharsis-project/katharsis-framework/tree/master/katharsis-examples/spring-boot-simple-example).
 
 ## Dependencies
@@ -45,6 +69,9 @@ http://localhost:8080/api/customer?page[limit]=2
 ```
 # Get customer id 1
 GET http://localhost:8080/api/customer/1
+
+# Get customers id 1 and 3
+GET http://localhost:8080/api/customer/1,3
 ```
 
 ```
@@ -138,12 +165,12 @@ POST http://localhost:8080/api/activityLog
       			"type": "user"
       		}
       	},
-      	"customer": {
-          	"data": {
-          		"id": "3",
-              	"type": "customer"
-       		}
-  		}
+      	"customer" : {
+          "data": {
+            "id": "3",
+            "type": "customer"
+          }
+        }
     	}
   	}
   }
@@ -205,7 +232,7 @@ POST http://localhost:8080/api/activityLog
       	"customer": {
           	"data": {
           		"id": "3",
-              	"type": "customer"
+              "type": "customer"
        		}
   		}
     	}
@@ -238,13 +265,13 @@ As shown in some of the sample calls, [filtering](http://katharsis-jsonapi.readt
 
 ## Implementation
 
-### Class structure
+### Class Structure
 ![class diagram](./images/mystic.png)
 
 ## Code
 Assuming that a Spring application is created from the [Spring REST tutorial](http://spring.io/guides/tutorials/bookmarks/), this document will focus on the changes needed to integrate Karthasis and json:api.
 
-### Spring originated code
+### Spring Originated Code
 ```
 dream.mystic/
     MysticDreamApplication.java
@@ -263,27 +290,30 @@ dream.mystic.repository/
     UserRepository.java
 ```
 
-### Files required for Katharsis
+### Files Required for Katharsis
 ```
 dream.mystic/
     JpaConfig.java
     ModuleConfig.java
 dream.mystic.repository.jsonapi/
-    ActivityLogResourceRepository.java
+    ActivityLogResourceRepositoryImpl.java
     ActivityLogToCustomerRelationshipRepository.java
     ActivityLogToUserRelationshipRepository.java
     CustomerResourceRepository.java
+    CustomerResourceRepositoryImpl.java
     CustomerToActivityLogRelationshipRepository.java
     CustomerToTripRelationshipRepository.java
-    TripResourceRepository.java
+    TripResourceRepositoryImpl.java
     TripToCustomerRelationshipRepository.java
     UserResourceRepository.java
+    UserResourceRepositoryImpl.java
     UserToActivityLogRelationshipRepository.java
 ```
 
 The files in the `jsonapi` package breakdown as:
 
-* `<X>ResourceRepository.java` is the Katharsis equivalent to the JPA `<X>Repository.java` files. Katharsis uses these files to publish API operations
+* `<X>ResourceRepository.java` file is an interface to generate meta information and links. This can be accomplished via annotations, but for the purposes of unit testing, the KatharsisClient needs to connect to an interface.
+* `<X>ResourceRepositoryImpl.java` is the Katharsis equivalent to the JPA `<X>Repository.java` files. Katharsis uses these files to publish API operations. For the files that only exist as an `Impl`, the meta information and links are generated via annotations in the domain object.
 * `<X>To<Y>RelationshipRepository.java` files handle the unidirectional relationships between resources X and Y. This is required when there is an annotation `@JsonApiToOne` or `@JsonApiToMany` of field Y in the X class. 
     + Because `<X>To<Y>` is unidirectional, there also needs to be a `<Y>To<X>RelationshipRepository.java` file to handle the other side of the relationship.
 
@@ -317,7 +347,7 @@ This defines many of Katharsis' properties.
 katharsis.resourcePackage=io.katharsis.example.springboot.simple.domain
 katharsis.domainName=http://localhost:8080
 katharsis.pathPrefix=/api
-katharsis.default-page-limit=
+katharsis.default-page-limit=25
 katharsis.jpa.enabled=false
 ```
 
@@ -347,6 +377,23 @@ public class Trip {
   private Long id;
   ...
 ```
+
+### Meta Information and Links
+This provides the object count and pagination links (first, next, previous, last) when a page limit is set. In the `application.properties` snippet above, the default page-size is set to 25.
+
+Within each Class/Model/Resource (that does not have a corresponding `ResourceRepository.java` interface), meta information and links are generated via annotations.
+
+```java
+  @JsonApiMetaInformation
+  @Transient
+  private MetaInformation metaInformation;
+  
+  @JsonApiLinksInformation
+  @Transient
+  private LinksInformation linksInformation;
+```
+
+Note the use of the `@Transient` annotation that keeps these fields from being stored in the database.
 
 ### Relationships
 If a Class/Resource has an association with another resource, the field needs to have an annotation of `@JsonApiToMany` or `@JsonApiToOne`.
@@ -392,30 +439,35 @@ As mentioned above, ResourceRepositories are used to publish API operations. It 
 
 ```java
 @Component
-public class TripResourceRepository extends ResourceRepositoryBase<Trip,Long> {
+public class TripResourceRepositoryImpl extends ResourceRepositoryBase<Trip,Long> {
 
   @Autowired
   private TripRepository tripRepository;
   
-  public TripResourceRepository() {
+  public TripResourceRepositoryImpl() {
     super(Trip.class);
   }
 
   @Override
-  public synchronized <S extends Trip> S save(S trip) {
+    public synchronized <S extends Trip> S save(S trip) {
             tripRepository.save(trip);
             return trip;
   }
   
   @Override
-  public Trip findOne(Long tripId, QuerySpec arg0) {
-    return tripRepository.findOne(tripId);
+  public synchronized Trip findOne(Long tripId, QuerySpec arg0) {
+    Trip trip =  tripRepository.findOne(tripId);
+    if(trip == null) {
+      throw new ResourceNotFoundException("Trip record not found");
+    }
+    return trip;
   }
   
   @Override
-  public ResourceList<Trip> findAll(QuerySpec arg0) {
+  public synchronized ResourceList<Trip> findAll(QuerySpec arg0) {
     return arg0.apply(tripRepository.findAll());
   }
+
 }
 ```
 

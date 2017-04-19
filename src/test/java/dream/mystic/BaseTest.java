@@ -1,6 +1,7 @@
 package dream.mystic;
 
 import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchema;
+import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.NO_CONTENT;
 import static org.springframework.http.HttpStatus.OK;
@@ -73,7 +74,8 @@ public abstract class BaseTest {
 	}
 
 	protected void testDelete(String url) {
-		RestAssured.given().contentType("application/json").when().delete(url).then().statusCode(NO_CONTENT.value());
+		//RestAssured.given().contentType("application/json").when().delete(url).then().statusCode(NO_CONTENT.value());
+		RestAssured.given().contentType("application/json").when().delete(url).then().statusCode(FORBIDDEN.value());
 	}
 
 }

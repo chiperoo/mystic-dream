@@ -73,6 +73,14 @@ public class MysticDreamApplicationTests extends BaseTest {
 		testFindMany("/api/trip");
 		testFindMany("/api/activityLog");
 	}
+	
+	@Test
+	public void testDelete() {
+		testDelete("/api/customer/1");
+		testDelete("/api/user/1");
+		testDelete("/api/trip/1");
+		testDelete("/api/activityLog/1");
+	}
 
 	@Test
 	public void testCreateCustomer() {
@@ -165,4 +173,5 @@ public class MysticDreamApplicationTests extends BaseTest {
 				.then().statusCode(CREATED.value());
 		response.assertThat().body(matchesJsonSchema(jsonApiSchema));
 	}
+	
 }

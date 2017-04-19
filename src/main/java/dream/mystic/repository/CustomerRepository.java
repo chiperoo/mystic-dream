@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import dream.mystic.domain.Customer;
 
-@Transactional(readOnly = true)
+//@Transactional(readOnly = true)
 public interface CustomerRepository extends JpaRepository<Customer, Long> {
 	Optional<Customer> findById(Long id);
 }
