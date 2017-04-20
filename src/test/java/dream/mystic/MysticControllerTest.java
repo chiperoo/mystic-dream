@@ -55,7 +55,7 @@ public class MysticControllerTest {
     @Test
     public void signUpCustomerForNewTrip() throws Exception {
         // sign up for new trip via RESTful call
-    	mockMvc.perform(post("/mystic/"
+    	mockMvc.perform(post("/mystic/customer/"
                 + this.customer.getId() + "/addTrip/"  
                 + this.trip.getId()));
         
@@ -74,7 +74,7 @@ public class MysticControllerTest {
     @Test
     public void removeCustomerFromNewTrip() throws Exception {
         // remove trip from customer via RESTful call
-    	mockMvc.perform(post("/mystic/"
+    	mockMvc.perform(post("/mystic/customer/"
                 + this.customer.getId() + "/removeTrip/"  
                 + this.trip.getId()));
         

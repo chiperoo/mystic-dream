@@ -239,7 +239,7 @@ POST http://localhost:8080/api/activityLog
 
 # Update customer and trip records to reflect trip
 # Note that this is a different url format
-POST http://localhost:8080/mystic/3/addTrip/5
+POST http://localhost:8080/mystic/customer/3/addTrip/5
 ```
 
 #### Flag an Activity Log Record as Important
@@ -290,7 +290,7 @@ POST http://localhost:8080/api/activityLog
 
 # Update customer and trip records to reflect trip
 # Note that this is a different url format
-POST http://localhost:8080/mystic/3/removeTrip/5
+POST http://localhost:8080/mystic/customer/3/removeTrip/5
 ```
 
 #### Get All Activity Log records For Specific Customer
@@ -650,7 +650,7 @@ public class MysticController {
    * @param tripId
    * @return
    */
-  @RequestMapping(method = RequestMethod.POST, value = "/{customerId}/addTrip/{tripId}")
+  @RequestMapping(method = RequestMethod.POST, value = "/customer/{customerId}/addTrip/{tripId}")
   public void updateCustomerWithTrip(@PathVariable Long customerId, @PathVariable Long tripId) {
     updateCustomerTrip(customerId, tripId, true);
   }
@@ -663,7 +663,7 @@ public class MysticController {
    * @param tripId
    * @return
    */
-  @RequestMapping(method = RequestMethod.POST, value = "/{customerId}/removeTrip/{tripId}")
+  @RequestMapping(method = RequestMethod.POST, value = "/customer/{customerId}/removeTrip/{tripId}")
   public void updateCustomerWithoutTrip(@PathVariable Long customerId, @PathVariable Long tripId) {
     updateCustomerTrip(customerId, tripId, false);
   }
