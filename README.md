@@ -6,6 +6,23 @@
 3. [Dependencies](#dependencies)
 4. [Running with Maven](#running-with-maven)
 5. [Calls](#calls)
+   1. [View All JSON API calls](#view-all-json-api-calls)
+   2. [Get All Customers](#get-all-customers)
+   3. [Get Specific Customers](#get-specific-customers)
+   4. [Create New Customer](#create-new-customer)
+   5. [Update Specific Customer](#update-specific-customer)
+   6. [Create New Trip](#create-new-trip)
+   7. [Get All Internal Users](#get-all-internal-users)
+   8. [Create New Internal User](#create-new-internal-user)
+   9. [Get All Activity Log Records](#get-all-activity-log-records)
+   10. [Create New Activity Log Record](#create-new-activity-log-record)
+   11. [Signing Customer For a Trip](#signing-customer-for-a-trip)
+   12. [Flag an Activity Log Record as Important](#flag-an-activity-log-record-as-important)
+   13. [Remove a Trip From a Customer](#remove-a-trip-from-a-customer)
+   14. [Get All Activity Log Records For Specific Customer](#get-all-activity-log-records-for-specific-customer)
+   15. [View All Customers Going on a Specific Trip](#view-all-customers-going-on-a-specific-trip)
+   16. [View All Trips a Customer is Going On](#view-all-trips-a-customer-is-going-on)
+   17. [View Activity Log Created By Specific User](#view-activity-log-created-by-specific-user)
 6. [Filtering and Sorting](#filtering-and-sorting)
 7. [Implementation](#implementation)
    1. [Class Structure](#class-structure)
@@ -16,11 +33,17 @@
    4. [Application.properties](#applicationproperties)
    5. [Classes/Models/Resources](#classes--models--resources)
    6. [IDs](#ids)
-   7. [Relationships](#relationships)
-   8. [ResourceRepositories](#resourcerepositories)
-   9. [RelationshipRepositories](#relationshiprepositories)
+   7. [Meta Information and Links](#meta-information-and-links)
+   8. [Relationships](#relationships)
+   9. [ResourceRepositories](#resourcerepositories)
+   10. [RelationshipRepositories](#relationshiprepositories)
       1. [Note](#note)
-   10. [Main class](#main-class)
+   11. [Main class](#main-class)
+   12. [Design Notes](#design-notes)
+9. [Testing](#testing)
+   1. [JSON API Tests](#json-api-tests)
+      1. [Pom.xml Test Changes](#pomxml-test-changes)
+   2. [Non-JSON API Tests](#non-json-api-tests)
 
 
 ---
@@ -42,7 +65,7 @@ The code uses:
 * [Spring Boot](https://projects.spring.io/spring-boot/)
 * H2
 * [Maven](https://maven.apache.org/index.html)
-* [Katharsis](http://katharsis.io/) (to implement json:api)
+* [Katharsis](http://katharsis.io/) (to implement JSON API)
 
 ## Running with Maven
 ```
@@ -52,8 +75,13 @@ $ mvn clean spring-boot:run
 ## Calls
 I found [Postman](https://www.getpostman.com/) invaluable for testing the calls. It is available as a Chrome extension or Mac/Windows/Linux application.
 
+#### View All JSON API Calls
 ```
-# Get all customers
+GET http://localhost:8080/resourcesInfo
+```
+
+#### Get All Customers
+```
 GET http://localhost:8080/api/customer/
 
 # Sorted by name ASC
@@ -66,6 +94,7 @@ GET http://localhost:8080/api/customer/?sort=-name
 http://localhost:8080/api/customer?page[limit]=2
 ```
 
+#### Get Specific Customers
 ```
 # Get customer id 1
 GET http://localhost:8080/api/customer/1
@@ -74,8 +103,8 @@ GET http://localhost:8080/api/customer/1
 GET http://localhost:8080/api/customer/1,3
 ```
 
+#### Create New Customer
 ```
-# Create new customer
 POST http://localhost:8080/api/customer/
 
 # body; type: json
@@ -90,6 +119,7 @@ POST http://localhost:8080/api/customer/
   }
 ```
 
+#### Update Specific Customer
 ```
 # Update customer id 5	
 PATCH http://localhost:8080/api/customer/5
@@ -105,8 +135,8 @@ PATCH http://localhost:8080/api/customer/5
   }
 ```
 
+#### Create New Trip
 ```
-# Create new trip
 POST http://localhost:8080/api/trip
 
 # body; type: json
@@ -120,13 +150,13 @@ POST http://localhost:8080/api/trip
   }
 ```
 
+#### Get All Internal Users
 ```
-# Get all internal users
 GET http://localhost:8080/api/user
 ```
 
+#### Create New Internal User
 ```
-# Create a new internal user
 POST http://localhost:8080/api/user/
 
 # body; type: json
@@ -141,11 +171,12 @@ POST http://localhost:8080/api/user/
   }
 ```
 
+#### Get All Activity Log Records
 ```
-# Get all activity log records
 GET http://localhost:8080/api/activityLog
 ```
 
+#### Create New Activity Log Record
 ``` 
 # Create activity log entry for customer 3; by user 2
 POST http://localhost:8080/api/activityLog
@@ -176,6 +207,7 @@ POST http://localhost:8080/api/activityLog
   }
 ```
 
+#### Signing Customer For a Trip
 ```
 # Customer 3 signs up for a trip; handled by admin user 2
 POST http://localhost:8080/api/activityLog
@@ -210,6 +242,7 @@ POST http://localhost:8080/api/activityLog
 POST http://localhost:8080/mystic/3/addTrip/5
 ```
 
+#### Flag an Activity Log Record as Important
 ```
 # Flag an activity log record as important
 PATCH http://localhost:8080/api/activityLog/2
@@ -225,6 +258,7 @@ PATCH http://localhost:8080/api/activityLog/2
   }
 ```
 
+#### Remove a Trip From a Customer
 ```
 #  Remove a trip from customer 3
 POST http://localhost:8080/api/activityLog
@@ -259,32 +293,75 @@ POST http://localhost:8080/api/activityLog
 POST http://localhost:8080/mystic/3/removeTrip/5
 ```
 
+#### Get All Activity Log records For Specific Customer
 ```
 # Get entire activity log for customer 3
 GET http://localhost:8080/api/customer/3/relationships/activityLog
 ```
 
+#### View All Customers Going on a Specific Trip
 ```
 # View all customers going on trip 4
 GET http://localhost:8080/api/trip/4/customers
 ```
 
+#### View All Trips a Customer is Going on
+```
+GET http://localhost:8080/api/customer/2/trips
+```
 
+#### View Activity Log Created By Specific User
 ```
 #  View the activity logs created by admin user 1, sorted by lastModified DESC
 GET http://localhost:8080/api/activityLog/?filter[activityLog][user][id]=1&sort=-lastModified
 ```
 
-### Filtering and Sorting
-As shown in some of the sample calls, [filtering](http://katharsis-jsonapi.readthedocs.io/en/latest/user-docs.html#filtering) and [sorting](http://katharsis-jsonapi.readthedocs.io/en/latest/user-docs.html#sorting) is built in.
+### Filtering, Sorting, and Pagination
+As shown in some of the sample calls, [filtering](http://katharsis-jsonapi.readthedocs.io/en/latest/user-docs.html#filtering), [sorting](http://katharsis-jsonapi.readthedocs.io/en/latest/user-docs.html#sorting), and [pagination](http://katharsis-jsonapi.readthedocs.io/en/latest/user-docs.html#pagination) is built in.
+
+Filters use the `filter` parameter.
+
+* `GET http://localhost:8080/api/activityLog?filter[important]=true`
+* `GET http://localhost:8080/api/activityLog?filter[important][EQ]=true`
+* `GET http://localhost:8080/api/activityLog?filter[description][LIKE]=syd`
+* `GET http://localhost:8080/api/activityLog?filter[activityLog][important]=true`
+
+Sorting uses the `sort` parameter.
+
+* `GET http://localhost:8080/api/customer?sort=name,-id`
+* `GET http://localhost:8080/api/trip?sort=-created`
+
+Pagination uses the `page` parameter.
+
+* `GET http://localhost:8080/api/activityLog?page[limit]=2`
+
+The `first`, `last`, `next`, and `prev` links are also provided. In the sample call above, these are the provided links:
+
+```json
+"links": {
+    "first": "http://localhost:8080/api/activityLog/?page[limit]=2",
+    "last": "http://localhost:8080/api/activityLog/?page[limit]=2&page[offset]=6",
+    "next": "http://localhost:8080/api/activityLog/?page[limit]=2&page[offset]=2",
+    "prev": null
+  }
+```
+
 
 ## Implementation
 
 ### Class Structure
 ![class diagram](./images/mystic.png)
 
+**Customer** - The customers of Mystic Dream.
+
+**User** - Internal users. The employees of Mystic Dream.
+
+**Trip** - The list of trips that customers go on.
+
+**ActivityLog** - The activity log of the customers, as entered by the users. These entries record all interactions with customers.
+
 ## Code
-Assuming that a Spring application is created from the [Spring REST tutorial](http://spring.io/guides/tutorials/bookmarks/), this document will focus on the changes needed to integrate Karthasis and json:api.
+Assuming that a Spring application is created from the [Spring REST tutorial](http://spring.io/guides/tutorials/bookmarks/), this document will focus on the changes needed to integrate Karthasis and JSON API.
 
 ### Spring Originated Code
 ```
@@ -307,9 +384,6 @@ dream.mystic.repository/
 
 ### Files Required for Katharsis
 ```
-dream.mystic/
-    JpaConfig.java
-    ModuleConfig.java
 dream.mystic.repository.jsonapi/
     ActivityLogResourceRepositoryImpl.java
     ActivityLogToCustomerRelationshipRepository.java
@@ -559,7 +633,7 @@ public class CustomerToTripRelationshipRepository extends RelationshipRepository
 ```
 
 #### Note
-I had trouble implementing the POST/PATCH calls via json:api to update the many-to-many relationship. In this particular project, a customer can go on many different trips. A trip can be taken by many different customers. When a customer signs up for a trip, I need to update this new join relationship instance.
+I had trouble implementing the POST/PATCH calls via JSON API to update the many-to-many relationship. In this particular project, a customer can go on many different trips. A trip can be taken by many different customers. When a customer signs up for a trip, I need to update this new join relationship instance.
 
 The workaround was to do this in code via a RESTful Spring call. This is why the Calls section noted a different URL for specific operations.
 
@@ -625,13 +699,13 @@ public class MysticController {
 ```
 
 ### Main class
-The main class needs to also be ammended to tie everything together. The primary changes include the `@Import` annotation with `KatharsisConfigV3.class`. The `getResources()` publishes all the available json:api calls at `GET http://localhost:8080/api/resourcesInfo`.
+The main class needs to also be ammended to tie everything together. The primary changes include the `@Import` annotation with `KatharsisConfigV3.class`. The `getResources()` publishes all the available JSON API calls at `GET http://localhost:8080/api/resourcesInfo`.
 
 ```java
 @Configuration
 @RestController
 @SpringBootApplication
-@Import({ KatharsisConfigV3.class, JpaConfig.class, ModuleConfig.class })
+@Import({ KatharsisConfigV3.class })
 public class MysticDreamApplication {
   
   @Autowired
@@ -652,3 +726,124 @@ public class MysticDreamApplication {
     SpringApplication.run(MysticDreamApplication.class, args);
   }
 ```
+
+### Design notes
+* The unit tests for JSON API rely on [Katharsis Client](https://github.com/katharsis-project/katharsis-framework/tree/master/katharsis-client) which requires an interface and not a class. Even though the [documentation](http://katharsis-jsonapi.readthedocs.io/en/stable/user-docs.html#meta-information) says that an interface is no longer required, the Katharsis Client relies on the older implementation method. Any class that has the newer annotations will error out when the Katharsis Client tries to connect.
+* Person is an abstract class, which Customer and User inherit from. Although Customer and User each have a list of ActivityLogs, the different annotations (mapping id) forced the field into the concrete classes.
+   * Customer and User do not use the [annotated meta information and links](#meta-information-and-links) because of the unit tests. The other domain objects (Trip, ActivityLog) do use the annotated meta information and links. If the annotated fields were allowed by the Katharsis Client, the annotated fields would have been in the abstract Person class.
+* Delete operations were intentionally set to forbidden, though it is easy enough to modify this behavior to implement a soft-delete by creating and updating a `deleted` flag within each domain object.
+```java
+# TripResourceRepositoryImpl.java
+...
+  @Override
+  public void delete(Long tripId) {
+    throw new ForbiddenException("Delete is not allowed");
+  }
+```
+* As mentioned in the [Relationship Repository Note](#note), updating the many-to-many relationship between Customer and Trip got overly complicated via JSON API compatible calls. The workaround was to use a RESTful Spring call and update the relationships via Java code.
+* ActivityLog has a `lastModified` timestamp field and a `lastModifiedById` field. The `lastModifiedById` needs to be in the JSON body (for update), as there is no account security to know who is accessing these URLs. With proper credentialling, this can be automatically calculated. 
+   * `lastModified` is automatically updated via this code
+   ```java
+    @PreUpdate
+    private void updateLastModified() {
+      setLastModified(new Timestamp(System.currentTimeMillis()));
+      if(lastModifiedById == null)
+        lastModifiedById = createdById;
+    }
+   ```
+
+
+## Testing
+There are two sets of unit tests: one for the JSON API calls, one for the non-JSON API calls.
+
+### JSON API Tests
+These tests cover:
+
+* Connecting via the Katharsis Client
+* For each class type (Customer, User, Trip, Activity Log):
+   * Finding one:
+   * Finding an invalid:
+   * Finding many:
+   * Deleting
+   * Creating
+   * Updating
+
+#### Pom.xml Test Changes
+A few additional dependencies were needed to support the unit tests. One tricky addition was Rest Assured, which had a [conflicting version of asm](https://github.com/rest-assured/rest-assured/wiki/FAQ#faq).
+
+```xml
+<dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+    
+    <dependency>
+      <groupId>org.springframework.restdocs</groupId>
+      <artifactId>spring-restdocs-mockmvc</artifactId>
+      <scope>test</scope>
+    </dependency>
+    
+    <dependency>
+      <groupId>io.zipkin.brave</groupId>
+      <artifactId>brave-apache-http-interceptors</artifactId>
+      <version>3.14.1</version>
+      <scope>compile</scope>
+      <optional>true</optional>
+    </dependency>
+    
+    <dependency>
+      <groupId>com.squareup.okhttp3</groupId>
+      <artifactId>okhttp</artifactId>
+      <version>3.4.1</version>
+      <scope>test</scope>
+    </dependency>
+    
+    <dependency>
+      <groupId>io.rest-assured</groupId>
+      <artifactId>rest-assured</artifactId>
+      <version>3.0.2</version>
+      <exclusions>
+        <!-- Exclude Groovy because of classpath issue -->
+        <exclusion>
+          <groupId>org.codehaus.groovy</groupId>
+          <artifactId>groovy</artifactId>
+        </exclusion>
+      </exclusions>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+        <groupId>org.codehaus.groovy</groupId>
+        <artifactId>groovy-all</artifactId>
+        <!-- Needs to be the same version that REST Assured depends on -->
+        <version>2.4.6</version>
+        <scope>test</scope>
+    </dependency>
+    
+    <dependency>
+      <groupId>io.rest-assured</groupId>
+      <artifactId>json-schema-validator</artifactId>
+      <version>3.0.2</version>
+      <scope>test</scope>
+    </dependency>
+    
+    <dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+      <version>1.3.2</version>
+      <scope>test</scope>
+    </dependency>
+    
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+```
+
+
+### Non-JSON API Tests
+These tests cover:
+
+* Adding a trip to a customer (which also adds a customer to a trip)
+* Removing a trip from a customer (which also removes a customer from a trip)

@@ -22,10 +22,13 @@ import io.katharsis.validation.ValidationModule;
 import io.restassured.RestAssured;
 import io.restassured.response.ValidatableResponse;
 
+// SpringBootTest doesn't start up a webserver by default 
+// webEnviroment tells SpringBootTest to start a webserver up on a random port 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = MysticDreamApplication.class, webEnvironment = WebEnvironment.RANDOM_PORT)
 public abstract class BaseTest {
 	
+	// injected port from webEnvironment
 	@LocalServerPort
 	private int port;
 	
@@ -73,6 +76,7 @@ public abstract class BaseTest {
 		response.assertThat().body(matchesJsonSchema(jsonApiSchema));
 	}
 
+	// change delete test to look for forbidden instead of a successful delete operation
 	protected void testDelete(String url) {
 		//RestAssured.given().contentType("application/json").when().delete(url).then().statusCode(NO_CONTENT.value());
 		RestAssured.given().contentType("application/json").when().delete(url).then().statusCode(FORBIDDEN.value());

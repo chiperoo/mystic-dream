@@ -47,6 +47,7 @@ public class MysticControllerTest {
     public void setup() throws Exception {
         this.mockMvc = webAppContextSetup(webApplicationContext).build();
 
+        // use these objects for the tests
         this.customer = customerRepository.save(new Customer(name, name + "@user.email"));
         this.trip = tripRepository.save(new Trip("description"));
     }

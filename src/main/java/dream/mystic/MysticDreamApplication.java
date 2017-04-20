@@ -32,7 +32,7 @@ import dream.mystic.repository.UserRepository;
 @Configuration
 @RestController
 @SpringBootApplication
-@Import({ KatharsisConfigV3.class, JpaConfig.class, ModuleConfig.class })
+@Import({ KatharsisConfigV3.class })
 public class MysticDreamApplication {
 	
 	@Autowired

@@ -4,7 +4,7 @@
  *  and not a class.
  *  
  *  The Katharsis 3.0 way of publishing meta information and pagination links, look at the domain 
- *  objects and the @JsonApiMetaInformation and @JsonApiLinksInformation annotations.
+ *  objects for the @JsonApiMetaInformation and @JsonApiLinksInformation annotations.
  *  
  */
 package dream.mystic.repository.jsonapi;
