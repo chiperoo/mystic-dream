@@ -23,7 +23,7 @@
    15. [View All Customers Going on a Specific Trip](#view-all-customers-going-on-a-specific-trip)
    16. [View All Trips a Customer is Going On](#view-all-trips-a-customer-is-going-on)
    17. [View Activity Log Created By Specific User](#view-activity-log-created-by-specific-user)
-6. [Filtering and Sorting](#filtering-and-sorting)
+6. [Filtering, Sorting, and Pagination](#filtering-sorting-and-pagination)
 7. [Implementation](#implementation)
    1. [Class Structure](#class-structure)
 8. [Code](#code)
